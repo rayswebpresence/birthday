@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ray's Cyberpunk Birthday | System Access</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated Background */
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: 1;
+        }
+        
+        /* Skateboard Stick Figure */
+        .skater-container {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            animation: skateAcross 12s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        .skater-container:hover .skater {
+            filter: drop-shadow(0 0 15px rgba(255, 0, 128, 0.8));
+        }
+        
+        .skater-container::after {
+            content: 'CLICK TO OLLIE!';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7em;
+            color: #ff0080;
+            opacity: 0;
+            animation: clickHint 5s ease-in-out;
+            white-space: nowrap;
+            text-shadow: 0 0 5px #ff0080;
+        }
+        
+        @keyframes clickHint {
+            0%, 20%, 100% { opacity: 0; }
+            30%, 70% { opacity: 1; }
+        }
+        
+        .skater {
+            position: relative;
+            width: 60px;
+            height: 80px;
+            animation: ollie 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.6));
+        }
+        
+        /* Stick Figure */
+        .stick-figure {
+            position: absolute;
+            top: 0;
+            left: 15px;
+        }
+        
+        .head {
+            width: 20px;
+            height: 20px;
+            border: 3px solid #00ffff;
+            border-radius: 50%;
+            background: transparent;
+            position: relative;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        
+        .body {
+            width: 3px;
+            height: 30px;
+            background: #00ffff;
+            position: absolute;
+            top: 20px;
+            left: 8.5px;
+            box-shadow: 0 0 5px #00ffff;
+        }
+        
+        .arm-left, .arm-right {
+            width: 15px;
+            height: 3px;
+            background: #00ffff;
+            position: absolute;
+            top: 25px;
+            box-shadow: 0 0 5px #00ffff;
+        }
+        
+        .arm-left {
+            left: -5px;
+            transform: rotate(-30deg);
+            transform-origin: right center;
+            animation: armSwing 1.5s ease-in-out infinite;
+        }
+        
+        .arm-right {
+            right: -5px;
+            transform: rotate(30deg);
+            transform-origin: left center;
+            animation: armSwing 1.5s ease-in-out infinite reverse;
+        }
+        
+        .leg-left, .leg-right {
+            width: 3px;
+            height: 20px;
+            background: #00ffff;
+            position: absolute;
+            top: 48px;
+            box-shadow: 0 0 5px #00ffff;
+        }
+        
+        .leg-left {
+            left: 5px;
+            transform: rotate(-10deg);
+        }
+        
+        .leg-right {
+            right: 5px;
+            transform: rotate(10deg);
+        }
+        
+        /* Skateboard */
+        .skateboard {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 8px;
+        }
+        
+        .board {
+            width: 100%;
+            height: 3px;
+            background: #ff0080;
+            border-radius: 2px;
+            position: relative;
+            box-shadow: 0 0 10px #ff0080;
+        }
+        
+        .wheel {
+            width: 8px;
+            height: 8px;
+            background: #00ffff;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -5px;
+            box-shadow: 0 0 5px #00ffff;
+        }
+        
+        .wheel-front {
+            left: 8px;
+        }
+        
+        .wheel-back {
+            right: 8px;
+        }
+        
+        /* Skate Animation */
+        @keyframes skateAcross {
+            0% {
+                left: -10%;
+            }
+            25% {
+                left: 25%;
+            }
+            50% {
+                left: 50%;
+            }
+            75% {
+                left: 75%;
+            }
+            100% {
+                left: 110%;
+            }
+        }
+        
+        @keyframes ollie {
+            0%, 20%, 80%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            30% {
+                transform: translateY(-5px) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+            70% {
+                transform: translateY(-5px) rotate(-3deg);
+            }
+        }
+        
+        @keyframes armSwing {
+            0%, 100% {
+                transform: rotate(-30deg);
+            }
+            50% {
+                transform: rotate(-60deg);
+            }
+        }
+        
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 128, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(0, 255, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.2) 0%, transparent 50%);
+            z-index: 2;
+        }
+        
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Header */
+        .cyber-header {
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .glitch-text {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 4em;
+            letter-spacing: 0.1em;
+            position: relative;
+            color: #fff;
+            text-shadow: 
+                0 0 10px #00ffff,
+                0 0 20px #00ffff,
+                0 0 30px #00ffff;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch-text::before {
+            animation: glitch1 0.5s infinite;
+            color: #ff0080;
+            z-index: -1;
+        }
+        
+        .glitch-text::after {
+            animation: glitch2 0.5s infinite;
+            color: #00ffff;
+            z-index: -2;
+        }
+        
+        /* Main Card */
+        .cyber-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ffff;
+            border-radius: 0;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            overflow: visible;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 255, 0.5),
+                inset 0 0 50px rgba(0, 255, 255, 0.1);
+            margin-top: 50px;
+        }
+        
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0080, #00ffff, #ff0080);
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+        }
+        
+        .cyber-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: -1;
+        }
+        
+        /* Event Details */
+        .event-details {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .event-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 3em;
+            font-weight: 900;
+            color: #ff0080;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 
+                0 0 20px #ff0080,
+                0 0 40px #ff0080,
+                0 0 60px #ff0080,
+                2px 2px 0 #00ffff,
+                -2px -2px 0 #00ffff;
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes titlePulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% {
+                transform: scale(1.05);
+                filter: brightness(1.3);
+            }
+        }
+        
+        .detail-item {
+            margin: 15px 0;
+            font-size: 1.2em;
+            color: #00ffff;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+        
+        .detail-label {
+            color: #ff0080;
+            display: inline-block;
+            width: 120px;
+            text-align: right;
+            margin-right: 10px;
+        }
+        
+        /* RSVP Section */
+        .rsvp-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            position: relative;
+            text-align: center;
+        }
+        
+        .rsvp-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #00ffff;
+            text-transform: uppercase;
+        }
+        
+        .rsvp-phone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-size: 1.5em;
+        }
+        
+        .phone-label {
+            color: #ff0080;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+        }
+        
+        .phone-number {
+            color: #00ffff;
+            text-decoration: none;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-shadow: 0 0 10px #00ffff;
+            transition: all 0.3s;
+        }
+        
+        .phone-number:hover {
+            text-shadow: 
+                0 0 20px #00ffff,
+                0 0 30px #00ffff;
+            transform: scale(1.1);
+        }
+        
+        /* Party Info */
+        .party-info {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 0, 128, 0.1);
+            border: 1px solid #ff0080;
+            text-align: center;
+        }
+        
+        .info-item {
+            margin: 20px 0;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+        }
+        
+        .byob {
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .neon-text {
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff;
+            letter-spacing: 0.1em;
+        }
+        
+        .neon-text.pulse {
+            color: #ff0080;
+            text-shadow: 
+                0 0 20px #ff0080,
+                0 0 40px #ff0080;
+            animation: neonPulse 1.5s ease-in-out infinite;
+            font-size: 1.3em;
+        }
+        
+        @keyframes neonPulse {
+            0%, 100% {
+                opacity: 1;
+                text-shadow: 
+                    0 0 20px #ff0080,
+                    0 0 40px #ff0080;
+            }
+            50% {
+                opacity: 0.8;
+                text-shadow: 
+                    0 0 30px #ff0080,
+                    0 0 60px #ff0080;
+            }
+        }
+        
+        .divider {
+            color: #fff;
+            opacity: 0.5;
+        }
+        
+        .byoc {
+            font-size: 1.2em;
+            margin-top: 30px;
+        }
+        
+        .bracket {
+            color: #00ffff;
+            font-size: 1.5em;
+            margin: 0 5px;
+        }
+        
+        .byoc-text {
+            color: #ff0080;
+            font-size: 1.3em;
+            text-shadow: 0 0 15px #ff0080;
+            letter-spacing: 0.15em;
+        }
+        
+        .subtitle {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: #00ffff;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
+        }
+        
+        /* Animations */
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        @keyframes glitch1 {
+            0%, 100% { clip-path: inset(0 0 0 0); }
+            20% { clip-path: inset(20% 0 60% 0); }
+            40% { clip-path: inset(50% 0 20% 0); }
+            60% { clip-path: inset(10% 0 80% 0); }
+            80% { clip-path: inset(80% 0 5% 0); }
+        }
+        
+        @keyframes glitch2 {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+        
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+            .glitch-text {
+                font-size: 2.5em;
+            }
+            
+            .event-title {
+                font-size: 2em;
+            }
+            
+            .cyber-card {
+                padding: 20px;
+            }
+            
+            .detail-label {
+                display: block;
+                width: 100%;
+                text-align: left;
+                margin-bottom: 5px;
+            }
+            
+            .skater-container {
+                top: -80px;
+                transform: scale(0.8) translateX(-50%);
+                transform-origin: center;
+            }
+            
+            .rsvp-phone {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .phone-number {
+                font-size: 1.2em;
+            }
+            
+            .byob {
+                font-size: 1.1em;
+            }
+            
+            .byoc {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="bg-gradient"></div>
+    
+    <div class="container">
+        <header class="cyber-header">
+            <h1 class="glitch-text" data-text="SYSTEM ACCESS GRANTED">SYSTEM ACCESS GRANTED</h1>
+        </header>
+        
+        <div class="cyber-card">
+            <!-- Skateboard Stick Figure -->
+            <div class="skater-container" title="Click me to ollie!">
+                <div class="skater">
+                    <div class="stick-figure">
+                        <div class="head"></div>
+                        <div class="body">
+                            <div class="arm-left"></div>
+                            <div class="arm-right"></div>
+                        </div>
+                        <div class="leg-left"></div>
+                        <div class="leg-right"></div>
+                    </div>
+                    <div class="skateboard">
+                        <div class="board"></div>
+                        <div class="wheel wheel-front"></div>
+                        <div class="wheel wheel-back"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="event-details">
+                <h2 class="event-title">Ray's 33rd Birthday</h2>
+                <div class="detail-item">
+                    <span class="detail-label">DATE://</span>
+                    <span>2025 MAY 29</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">TIME://</span>
+                    <span>18:30:00 [6:30 PM]</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">LOCATION://</span>
+                    <span>3259 S HUDSON AVE</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">SECTOR://</span>
+                    <span>TULSA, OK 74135</span>
+                </div>
+            </div>
+            
+            <div class="rsvp-section">
+                <h3 class="rsvp-title">// RSVP PROTOCOL</h3>
+                <div class="rsvp-phone">
+                    <span class="phone-label">TEXT:</span>
+                    <a href="sms:+12173693404" class="phone-number">217-369-3404</a>
+                </div>
+            </div>
+            
+            <div class="party-info">
+                <div class="info-item byob">
+                    <span class="neon-text">SNACKS PROVIDED</span>
+                    <span class="divider">◊</span>
+                    <span class="neon-text pulse">BYOB</span>
+                </div>
+                <div class="info-item byoc">
+                    <span class="bracket">[</span>
+                    <span class="byoc-text">BYOC</span>
+                    <span class="bracket">]</span>
+                    <span class="subtitle">BRING YOUR OWN CHAIR</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Skateboarder click handler
+        const skaterContainer = document.querySelector('.skater-container');
+        const skater = document.querySelector('.skater');
+        
+        skaterContainer.addEventListener('click', function() {
+            // Remove animation temporarily
+            skater.style.animation = 'none';
+            
+            // Force reflow
+            void skater.offsetWidth;
+            
+            // Add a more dramatic ollie animation
+            skater.style.animation = 'bigOllie 0.8s ease-out';
+            
+            // Reset to normal animation after ollie completes
+            setTimeout(() => {
+                skater.style.animation = 'ollie 1.5s ease-in-out infinite';
+            }, 800);
+        });
+        
+        // Add the big ollie animation dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bigOllie {
+                0% { transform: translateY(0) rotate(0deg); }
+                30% { transform: translateY(-60px) rotate(-15deg); }
+                50% { transform: translateY(-80px) rotate(20deg); }
+                70% { transform: translateY(-40px) rotate(10deg); }
+                100% { transform: translateY(0) rotate(0deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Cyberpunk effects
+        const glitchElements = document.querySelectorAll('.glitch-text');
+        setInterval(() => {
+            glitchElements.forEach(el => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = '';
+                }, 10);
+            });
+        }, 3000);
+    </script>
+</body>
+</html>
